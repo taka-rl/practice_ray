@@ -12,7 +12,8 @@ algo = (
     .environment(env=env_name)
     .framework("torch")
     .evaluation(evaluation_num_workers=1)
-    .build(logger_creator=custom_log_creator(custom_path, env_name))
+    .build()
+    # .build(logger_creator=custom_log_creator(custom_path, env_name))
 )
 
 for i in range(1):
@@ -27,6 +28,8 @@ to select a folder for the checkpoint result
 # checkpoint_dir = custom_log_checkpoint(custom_path, env_name)
 checkpoint_dir = custom_path + "/" + env_name
 checkpoint_dir = algo.save(checkpoint_dir)
+'''
+checkpoint_dir = algo.save().checkpoint.path
 print(f"Checkpoint saved in directory {checkpoint_dir}")
 algo.evaluate()
-'''
+
