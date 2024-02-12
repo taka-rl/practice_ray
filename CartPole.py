@@ -35,4 +35,3 @@ while not terminated and not truncated:
     time.sleep(0.1)
     episode_reward += reward
     print("Episode reward:", episode_reward)
-
