@@ -13,9 +13,13 @@ import gymnasium as gym
 from ray.rllib.algorithms.ppo import PPO
 import time
 
+from path_select import select_path
+
+
 env_name = "CartPole-v1"
 env = gym.make(env_name, render_mode="human")
-algo = PPO.from_checkpoint("C:/Users/is12f/AppData/Local/Temp/tmpbgedyug4")
+checkpoint = select_path(env_name)
+algo = PPO.from_checkpoint(checkpoint + "/tmpbgedyug4")
 
 episode_reward = 0
 terminated = truncated = False

@@ -5,11 +5,15 @@ import gymnasium as gym
 from ray.rllib.algorithms.ppo import PPO
 import time
 
+from path_select import select_path
 
-env = gym.make("FrozenLake-v1", render_mode="human")
+
+env_name = "FrozenLake-v1"
+env = gym.make(env_name, render_mode="human")
 observation, info = env.reset()
+checkpoint = select_path(env_name)
 # algo = PPO.from_checkpoint("C:/Users/is12f/AppData/Local/Temp/tmpe8e_n0uq") # trained for 50 iterations with 2 rollout workers
-algo = PPO.from_checkpoint("C:/Users/is12f/AppData/Local/Temp/tmp4mapp34h") # trained for 50 iterations with 4 rollout workers
+algo = PPO.from_checkpoint(checkpoint + "/tmp4mapp34h") # trained for 50 iterations with 4 rollout workers
 
 # algo = PPOConfig()
 episode_reward = 0
