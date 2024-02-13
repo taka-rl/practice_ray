@@ -8,9 +8,11 @@ add display for action,reward, environment
 
 from ray.rllib.algorithms.ppo import PPOConfig
 from log_creator import custom_log_creator
+from log_checkpoint import custom_log_checkpoint
+from path_select import get_current_path
 
 env_name = "Taxi-v3"
-custom_path = "C:/Users/is12f/Documents/programming/pythonProject/trained_agent"
+custom_path = get_current_path() + "/training_result/"
 
 config = (  # 1. Configure the algorithm,
     PPOConfig()
@@ -21,22 +23,16 @@ config = (  # 1. Configure the algorithm,
     # .training(model={"fcnet_hiddens": [128, 128]})
     .evaluation(evaluation_num_workers=1)
 )
-# algo = config.build(logger_creator=custom_log_creator(custom_path, env_name))  # 2. build the algorithm,
-algo = config.build()
+algo = config.build(logger_creator=custom_log_creator(custom_path, env_name))  # 2. build the algorithm,
+# algo = config.build()
 
 for i in range(50):
     print("Iterations:", i, ":", algo.train())  # 3. train it,
 
 algo.evaluate()  # 4. and evaluate it.
 
-
-'''
-need to make a function or use custom_log_creator function
-to select a folder for the checkpoint result
-
-checkpoint_dir = custom_log_checkpoint(custom_path, env_name)
-checkpoint_dir = custom_path + "/" + env_name
+# save the checkpoint
+checkpoint_dir = custom_log_checkpoint(env_name, algo)
 checkpoint_dir = algo.save(checkpoint_dir)
-'''
-checkpoint_dir = algo.save().checkpoint.path
 print(f"Checkpoint saved in directory {checkpoint_dir}")
+

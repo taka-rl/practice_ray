@@ -2,9 +2,11 @@ from ray.rllib.algorithms.ppo import PPOConfig
 from ray.tune.logger import pretty_print
 from log_creator import custom_log_creator
 from log_checkpoint import custom_log_checkpoint
+from path_select import get_current_path
 
 env_name = "CartPole-v1"
-custom_path = "C:/Users/is12f/Documents/programming/pythonProject/trained_agent"
+custom_path = get_current_path() + "/training_result/"
+
 algo = (
     PPOConfig()
     .rollouts(num_rollout_workers=1)
@@ -19,14 +21,7 @@ for i in range(1):
     result = algo.train()
     print(pretty_print(result))
 
-
-'''
-need to make a function or use custom_log_creator function
-to select a folder for the checkpoint result
-
-# checkpoint_dir = custom_log_checkpoint(custom_path, env_name)
-checkpoint_dir = custom_path + "/" + env_name
+# save the checkpoint
+checkpoint_dir = custom_log_checkpoint(env_name, algo)
 checkpoint_dir = algo.save(checkpoint_dir)
 print(f"Checkpoint saved in directory {checkpoint_dir}")
-algo.evaluate()
-'''
